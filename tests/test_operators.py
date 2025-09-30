@@ -108,7 +108,15 @@ def test_sigmoid(a: float) -> None:
     * It is  strictly increasing.
     """
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    s = sigmoid(a)
+    assert 0.0 <= s <= 1.0
+
+    assert_close(1.0 - s, sigmoid(-a))
+
+    assert_close(sigmoid(0.0), 0.5)
+
+    delta = 1e-3
+    assert sigmoid(a + delta) >= s
 
 
 @pytest.mark.task0_2
@@ -116,7 +124,14 @@ def test_sigmoid(a: float) -> None:
 def test_transitive(a: float, b: float, c: float) -> None:
     "Test the transitive property of less-than (a < b and b < c implies a < c)"
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    eps = 1e-6
+    x = a
+    y = x + abs(b) + eps
+    z = y + abs(c) + eps
+
+    assert lt(x, y) == 1.0
+    assert lt(y, z) == 1.0
+    assert lt(x, z) == 1.0
 
 
 @pytest.mark.task0_2
@@ -126,7 +141,8 @@ def test_symmetric() -> None:
     gives the same value regardless of the order of its input.
     """
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    for x, y in [(0.0, 0.0), (1.2, -3.4), (1e-6, 5.0), (-7.0, 2.5)]:
+        assert_close(mul(x, y), mul(y, x))
 
 
 @pytest.mark.task0_2
@@ -136,7 +152,16 @@ def test_distribute() -> None:
     :math:`z \times (x + y) = z \times x + z \times y`
     """
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    cases = [
+        (0.0, 0.0, 0.0),
+        (1.0, 2.0, 3.0),
+        (-4.0, 1.5, -2.5),
+        (1e-3, 1e-3, -2e-3),
+    ]
+    for z, x, y in cases:
+        left = mul(z, add(x, y))
+        right = add(mul(z, x), mul(z, y))
+        assert_close(left, right)
 
 
 @pytest.mark.task0_2
@@ -145,7 +170,8 @@ def test_other() -> None:
     Write a test that ensures some other property holds for your functions.
     """
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError('Need to implement for Task 0.2')
+    for x in [0.5, -2.3, 1e-2, -1e-1, 3.14159]:
+        assert_close(mul(x, inv(x)), 1.0)
 
 
 # ## Task 0.3  - Higher-order functions
@@ -174,7 +200,9 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
     # TODO: Implement for Task 0.3.
-    raise NotImplementedError('Need to implement for Task 0.3')
+    left = add(sum(ls1), sum(ls2))
+    right = sum(addLists(ls1, ls2))
+    assert_close(left, right)
 
 
 @pytest.mark.task0_3
